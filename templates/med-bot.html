@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med-Bot</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+      body {
+        font-family: monospace;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+      }
+      h1 {
+        background-color: #8080ff;
+        color: black;
+        font-size: 2em;
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+      }
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0 auto;
+      }
+      #chatbox {
+        background-color: #89cff0;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: auto;
+        max-height: 400px;
+        padding: 20px;
+        width: 60%;
+      }
+      #userInput {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 60%;
+      }
+      #textInput {
+        width: 70%;
+        border: none;
+        border-bottom: 3px solid black;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 17px;
+        background-color: white;
+      }
+      #sendButton {
+        background-color: #8080ff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .userText,
+      .botText {
+        margin: 10px 0;
+        word-wrap: break-word;
+      }
+      .userText {
+        text-align: right;
+      }
+      .userText span,
+      .botText span {
+        background-color: white;
+        padding: 10px;
+        border-radius: 2px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        box-sizing: border-box;
+      }
+
+      #container {
+        min-height: 100vh;
+        display: flex;
+      }
+
+      .left {
+        width: 50vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .bot-text {
+        color: #8080ff;
+        font-weight: bold;
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+      .right {
+        width: 50vw;
+      }
+
+      header {
+        width: 100%;
+
+        color: white;
+        padding: 10px;
+        text-align: center;
+      }
+      .box {
+        width: 500px;
+        height: auto;
+        padding: 10px;
+        background-color: red;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      .botText {
+        margin: 10px 0;
+        word-wrap: break-word;
+        max-width: 100%; /* Limit the width of the text to 100% of the container */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Display an ellipsis (...) when text overflows */
+      }
+
+      .botText span {
+        background-color: white;
+        padding: 10px;
+        border-radius: 2px;
+        display: inline-block; /* Ensure the span behaves like a block element */
+        max-width: 100%; /* Limit the width of the span to 100% of the container */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Display an ellipsis (...) when text overflows */
+      }
+      .userText {
+        text-align: right;
+        margin: 10px 0;
+      }
+
+      .botText {
+        margin: 10px 0;
+        word-wrap: break-word;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .userText span,
+      .botText span {
+        background-color: white;
+        padding: 10px;
+        border-radius: 2px;
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div id="container">
+        <div class="left">
+          <img src="/static/images/med-bot-png.jpg" alt="" />
+        </div>
+        <div class="right">
+          <div class="chat-container">
+            <p class="bot-text">Welcome To MedBot!</p>
+            <div id="chatbox"></div>
+            <div id="userInput">
+              <input
+                id="textInput"
+                type="text"
+                name="msg"
+                placeholder="Enter message here..."
+              />
+              <button id="sendButton" onclick="getBotResponse()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function getBotResponse() {
+        var rawText = $("#textInput").val();
+        var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+
+        // Send request to Flask server
+        $.get("/get", { msg: rawText }, function (data) {
+          console.log("Response from server:", data);
+
+          // Process and display the response
+          var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+          $("#chatbox").append(botHtml);
+
+          // Auto-scroll to the bottom
+          var chatbox = document.getElementById("chatbox");
+          chatbox.scrollTop = chatbox.scrollHeight;
+
+          // Optionally, you can smooth scroll using jQuery
+          // $("#chatbox").animate({ scrollTop: $("#chatbox")[0].scrollHeight }, 500);
+
+          document
+            .getElementById("userInput")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+        });
+      }
+    </script>
+  </body>
+</html>

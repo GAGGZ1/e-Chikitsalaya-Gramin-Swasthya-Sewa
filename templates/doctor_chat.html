@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebChat</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #e4ffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #header-text {
+        margin-bottom: -30px;
+        margin-top: 50px;
+        margin-right: 20px;
+        border: 2px;
+        padding: 20px;
+        font-size: 24px; /* Increased font size */
+        font-weight: bold; /* Bold font */
+        width: 320px; /* Adjust the width as needed */
+        height: 10px; /* Adjust the height as needed */
+        background-color: #f96970;
+        display: flex;
+        color: white;
+        font-family: "Roboto", sans-serif;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        white-space: nowrap; /* Prevent line breaks */
+        overflow: hidden; /* Hide overflow text */
+        border-radius: 30px; /* Adjust the border-radius as needed */
+      }
+
+      #container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      #messages {
+        height: 200px;
+        overflow-y: scroll;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+      }
+
+      input[type="text"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      #sendBtn {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #sendBtn:hover {
+        background-color: #45a049;
+      }
+
+      .full-chat {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .left-chat {
+        margin-top: 20vh;
+        margin-left: 50px;
+        width: 500px;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      .right-chat {
+        margin-top: 20vh;
+        margin-left: 50px;
+        width: 500px;
+        margin-right: 20px;
+      }
+
+      .header-chat {
+        text-align: center;
+        color: #55b2e7;
+        font-weight: bold;
+        font-family: monospace;
+        font-size: 30px;
+        text-decoration: underline;
+        text-underline-offset: 6px;
+      }
+
+      .capsule {
+        border: 2px;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        width: 220px;
+        height: 0px;
+        background-color: #f96970;
+        display: flex;
+        color: white;
+        font-family: "Roboto", sans-serif;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        border-radius: 30px;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+  </head>
+  <body>
+    <div id="header-text">Connect with Doctor</div>
+
+    <section class="full-chat">
+      <div class="left-chat">
+        <img src="/static/images/3807347-removebg-preview.png" alt="" />
+      </div>
+      <div id="container">
+        <p class="header-chat">Medi-Chat</p>
+        <div id="messages"></div>
+        <input type="text" name="" id="username" placeholder="Username" />
+        <input type="text" id="message" placeholder="Message" />
+        <button id="sendBtn">Send</button>
+      </div>
+      <div class="right-chat"><img src="/static/images/3720926.jpg" alt="" /></div>
+    </section>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var socket = io.connect("http://localhost:8040");
+        socket.on("connect", function () {
+          socket.send("User connected!");
+        });
+
+        socket.on("message", function (data) {
+          $("#messages").append($("<p>").text(data));
+          $("#messages").scrollTop($("#messages")[0].scrollHeight);
+        });
+
+        $("#sendBtn").on("click", function () {
+          socket.send($("#username").val() + ": " + $("#message").val());
+          $("#message").val("");
+        });
+      });
+    </script>
+  </body>
+</html>

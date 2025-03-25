@@ -1,0 +1,31 @@
+
+.chatbot-icon {
+    position: fixed;
+    bottom: 20px; /* Adjust the distance from the bottom */
+    right: 80px; /* Adjust the distance from the right */
+    z-index: 1000; /* Ensure the chatbot icon is above other elements on the page */
+    cursor: pointer;
+}
+
+/* Additional styling if needed */
+.chatbot-icon img {
+    width: 80px; /* Adjust the width of the chatbot icon */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 50%; /* Make the icon circular */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+.chatbot-icon:hover::before {
+    content: "Medbot";
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 17px;
+    bottom: 90px; /* Adjust the distance from the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.9;
+    pointer-events: none; /* Ensure the tooltip doesn't interfere with clicks */
+    z-index: 1000;
+}
