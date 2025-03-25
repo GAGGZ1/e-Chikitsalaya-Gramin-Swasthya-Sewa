@@ -193,5 +193,9 @@ if __name__ == '__main__':
     # app.run(port=8080, debug=True)
     #  socketio.run(app, host='localhost', port=8080, debug=True)
     # socketio.run(app, host='127.0.0.1', port=8040, debug=True)
-    socketio.run(app, host='0.0.0.0', port=int(os.getenv("PORT", 10000)), debug=False)
+    # socketio.run(app, host='0.0.0.0', port=int(os.getenv("PORT", 10000)), debug=False)
+    
+    # socketio.run(app, host='0.0.0.0', port=10000, debug=False)
 
+    PORT = int(os.environ.get("PORT", 10000))  # Use Render's dynamic port
+    socketio.run(app, host="0.0.0.0", port=PORT, debug=False)
