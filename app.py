@@ -249,6 +249,13 @@ def sql_connector():
     c = conn.cursor()
     return conn, c
 
+@app.route('/video_call_doc_html')
+def video_call_doc_html():
+    return render_template('video_call_doc_webrtc.html')
+
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     success_message = None
@@ -284,6 +291,24 @@ def newsletter():
         conn.close()
         c.close()
     return redirect('/')
+
+
+
+@app.route('/chatbot_page')
+def chatbot_page():
+    return render_template('med-bot.html')
+
+
+@app.route('/doctor_chat')
+def doctor_chat():
+    return render_template('doctor_chat.html')
+
+
+@app.route('/dev_team_detail')
+def dev_team_detail():
+    return render_template('dev-team-detail.html')
+
+
 
 @app.route('/success.html')
 def success():
